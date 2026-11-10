@@ -95,7 +95,18 @@ def prepare(rows, scaler_fit_indices, no_architecture=False):
     scalers = {}
     for name, values in (("architecture", architecture), ("workload", workload),
                          ("configuration", configuration)):
-        scaler = Standardizer().fit(values[scaler_fit_indices])
+        fit_values = values[scaler_fit_indices]
+        raw_std = fit_values.std(axis=0)
+        scaler = Standardizer().fit(fit_values)
+        if name == "architecture":
+            # With one source GPU, every hardware descriptor is constant.  A
+            # unit fallback scale would turn differences in byte counts or
+            # clocks into enormous inputs.  Scaling such columns by the source
+            # magnitude is leakage-free and expresses a target GPU as a
+            # relative change from the source architecture.
+            constant = raw_std < 1e-8
+            scaler.std[constant] = np.maximum(
+                np.abs(scaler.mean[constant]), 1.0)
         values[:] = scaler.transform(values)
         scalers[name] = scaler
     if no_architecture:
@@ -380,7 +391,9 @@ def main():
                 "target_calibration_pool_rows": int(len(target_calibration)),
                 "target_test_rows": int(len(target_test)),
                 "target_test_workloads": len(target_test_groups),
-                "normalization_fit": "source training rows only",
+                "normalization_fit": (
+                    "source training rows only; zero-variance architecture features "
+                    "use source-magnitude relative scaling"),
                 "model_selection": "source validation workloads only",
             },
             "transfer": experiment_rows, "ablations": ablations,
