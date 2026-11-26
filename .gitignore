@@ -1,0 +1,16 @@
+# Local caches, scheduler output, and LaTeX build intermediates
+.DS_Store
+__pycache__/
+*.pyc
+/slurm-[0-9]*.out
+/slurm-[0-9]*.err
+/*.[0-9]*.out
+/*.[0-9]*.err
+/paper/*.aux
+/paper/*.blg
+/paper/*.log
+/paper/*.out
+
+._*
+
+/legacy/archive/

@@ -21,7 +21,7 @@ shopt -s nullglob
 inputs=(results/*/matmul-*.csv results/*/reductions-*.csv)
 (( ${#inputs[@]} > 0 )) || { echo "No measurement CSVs found" >&2; exit 1; }
 
-python scripts/run_transfer_experiments.py "${inputs[@]}" \
+python legacy/scripts/run_transfer_experiments.py "${inputs[@]}" \
     --output-dir "$OUTPUT_DIR" \
     --source-token A100 \
     --target-token H100 \

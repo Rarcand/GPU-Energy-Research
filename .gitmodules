@@ -1,6 +1,6 @@
 [submodule "tools/accel-sim"]
-	path = tools/accel-sim
+	path = legacy/tools/accel-sim
 	url = https://code.stanford.edu/tambe-lab/accel-sim.git
 [submodule "tools/gpgpu-sim"]
-	path = tools/gpgpu-sim
+	path = legacy/tools/gpgpu-sim
 	url = https://code.stanford.edu/tambe-lab/gpgpu-sim.git
