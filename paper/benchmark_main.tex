@@ -1,0 +1,16 @@
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{4}{c}{Graph replay} & \multicolumn{4}{c}{Individual launch} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+Method & $S_4$ & $B_{90}$ & MAPE & Within 10\% & $S_4$ & $B_{90}$ & MAPE & Within 10\% \\
+\midrule
+Gaussian surrogate & 93.7 & 6 & 17.8 & 46.0 & 72.7 & 14 & 25.8 & 39.4 \\
+Geometry ridge & 93.6 & 6 & 18.0 & 45.6 & 72.9 & 15 & 25.7 & 39.4 \\
+Ranked FiLM & 87.1 & 11 & 20.9 & 34.8 & 72.3 & 14 & 25.1 & 42.5 \\
+Boosted tree & 88.3 & 16 & 24.5 & 34.4 & 68.1 & 17 & 29.9 & 28.4 \\
+Target-only GP--EI & 84.7 & 12 & 20.4 & 42.8 & 72.5 & 16 & 35.6 & 40.3 \\
+Gaussian, no feedback & 85.4 & 9 & -- & -- & 72.4 & 15 & -- & -- \\
+Gaussian, offset-only forecast & -- & -- & 20.6 & 39.7 & -- & -- & 25.2 & 42.7 \\
+Random search & 64.7 & 32 & -- & -- & 66.5 & 28 & -- & -- \\
+\bottomrule
+\end{tabular}
