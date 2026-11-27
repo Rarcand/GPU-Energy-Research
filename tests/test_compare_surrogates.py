@@ -3,8 +3,8 @@ import sys
 import unittest
 from pathlib import Path
 import numpy as np
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'analysis' / 'surrogate' / 'scripts'))
-from compare_surrogates import (normalized, split_groups, matrices, scores,
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from analysis.surrogate.scripts.models.compare_surrogates import (normalized, split_groups, matrices, scores,
                                  Network, Processor, calibration)
 
 
@@ -62,7 +62,7 @@ class ProtocolTests(unittest.TestCase):
         self.assertTrue(set(a)<=set(b))
 
     def test_paired_interval_preserves_task_weights(self):
-        from report_comparisons import paired_interval
+        from analysis.surrogate.scripts.reporting.report_comparisons import paired_interval
         def run(method):
             tasks=[]
             # Unequal dtype coverage: group a has two tasks, b has one.
