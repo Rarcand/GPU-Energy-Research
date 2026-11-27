@@ -1,5 +1,6 @@
 """Compare held-out policy replays with matched workload shapes, precision, and pass count."""
 import argparse
+import csv
 import gzip
 import itertools
 import json
@@ -73,6 +74,19 @@ def score(root, passes):
                                'vary between FP16 and BF16. The two precision estimates do not isolate a datatype effect.')
 
 
+def write_precision_table(path, report):
+    with path.open('w', newline='') as stream:
+        writer = csv.writer(stream, lineterminator='\n')
+        writer.writerow(['precision', 'mode', 'budget', 'device_shape_split_cases',
+                         'gaussian_pct', 'feedback_disabled_pct', 'geometry_ridge_pct',
+                         'feedback_gain_pp', 'feedback_ci_low_pp', 'feedback_ci_high_pp'])
+        for dtype, result in report['precisions'].items():
+            scores = result['overall']
+            for index, mode in enumerate(report['modes']):
+                writer.writerow([dtype, mode, report['budget'], result['device_shape_split_cases'],
+                                 *scores['values'][index], scores['gain'][index], *scores['ci'][index]])
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('benchmark', type=Path)
@@ -81,5 +95,6 @@ if __name__ == '__main__':
     out = score(args.benchmark, args.passes)
     dest = args.benchmark / f'independent-policy-by-precision-{args.passes}pass.json'
     dest.write_text(json.dumps(out, indent=2) + '\n')
+    write_precision_table(dest.with_suffix('.csv'), out)
     for dtype, result in out['precisions'].items():
         print(dtype, result['device_shape_split_cases'], result['overall'])
