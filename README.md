@@ -1,10 +1,17 @@
 # When Does Timing Feedback Help Budgeted GPU Kernel Autotuning?
 
-The [workshop paper](paper/main.pdf) compares adaptive and fixed configuration
-choices on five GPU environments across seven Triton workload families. After
-four graph-replay measurements, the adaptive Gaussian surrogate achieved 87.9%
-macro-averaged independent-pass success, compared with 80.7% for the
-shape-conditioned fixed portfolio.
+When both the GPU and the workload shape are new, how should an autotuner spend
+its first few measurements? We train a Gaussian world model on other GPUs and
+shapes. Each time the tuner measures a kernel configuration, it updates its
+latency estimates for the remaining candidates and chooses what to try next.
+
+The [workshop paper](paper/main.pdf) evaluates this strategy across five GPUs
+and seven Triton kernel families. With four CUDA graph measurements, the tuner
+selected a configuration within 5% of the fastest measured on a separate timing
+pass in 87.9% of cases (macro average). A fixed shortlist learned from similar
+shapes reached 80.7%. Timing feedback mattered much less for individual kernel
+launches, where enabling it improved the same tuner's success rate by only
+0.08 percentage points.
 
 | Task | Start here |
 |---|---|
